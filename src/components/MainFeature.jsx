@@ -60,7 +60,8 @@ const MainFeature = () => {
   const services = [
     { id: 1, name: "General Check-up", duration: "30 min", price: "$120" },
     { id: 2, name: "Consultation", duration: "45 min", price: "$150" },
-    { id: 3, name: "Specialized Exam", duration: "60 min", price: "$200" }
+    { id: 3, name: "Specialized Exam", duration: "60 min", price: "$200" },
+    { id: 4, name: "General Checkup", duration: "45 min", price: "$150" }
   ];
 
   // Generate available time slots

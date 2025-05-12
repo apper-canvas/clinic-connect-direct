@@ -67,6 +67,13 @@ const Home = () => {
       description: "Complete blood count, metabolic panels, cholesterol screening, and specialized tests.",
       icon: "Flask",
       duration: "20 min"
+    },
+    {
+      id: 4,
+      name: "General Checkup",
+      description: "Comprehensive physical examination to assess your overall health status and identify potential concerns.",
+      icon: "Stethoscope",
+      duration: "45 min"
     }
   ];
 
