@@ -451,7 +451,6 @@ const MainFeature = () => {
               </div>
             </div>
                       onClick={() => setServiceSelection(service)}
-        )}
 
         {step === 3 && (
           <div className="p-6">
