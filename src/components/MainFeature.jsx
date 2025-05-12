@@ -230,12 +230,12 @@ const MainFeature = () => {
               
               <div>
                 <p className="text-sm text-surface-500 dark:text-surface-500">Doctor</p>
-                <p className="font-medium">{selectedDoctor.name}</p>
+                <p className="font-medium">{selectedDoctor?.name}</p>
               </div>
               
               <div>
                 <p className="text-sm text-surface-500 dark:text-surface-500">Service</p>
-                <p className="font-medium">{selectedService.name}</p>
+                <p className="font-medium">{selectedService?.name}</p>
               </div>
               
               <div>
@@ -450,7 +450,6 @@ const MainFeature = () => {
                 </div>
               </div>
             </div>
-                      onClick={() => setServiceSelection(service)}
             <h2 className="text-xl font-semibold mb-6">Your Information</h2>
             
             <form onSubmit={handleSubmit}>
