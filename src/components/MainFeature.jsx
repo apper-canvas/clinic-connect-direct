@@ -451,8 +451,6 @@ const MainFeature = () => {
               </div>
             </div>
                       onClick={() => setServiceSelection(service)}
-
-        {step === 3 && (
           <div className="p-6">
             <h2 className="text-xl font-semibold mb-6">Your Information</h2>
             
