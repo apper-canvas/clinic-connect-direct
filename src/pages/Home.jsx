@@ -427,10 +427,12 @@ const Home = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button 
                     className="btn-primary text-base px-6 py-3" 
-                    onClick={() => setActiveTab('appointments')}
+                    onClick={() => {
                       setActiveTab('appointments');
                       setSelectedDoctorForAppointment(null);
                       setSelectedServiceForAppointment(null);
+                    }}
+                  >
                     Book Appointment
                   </button>
                   <button 
