@@ -506,6 +506,7 @@ const MainFeature = () => {
                   ))}
                 </div>
               </div>
+            </div>
             <h2 className="text-xl font-semibold mb-6">Your Information</h2>
             
             <form onSubmit={handleSubmit}>
@@ -598,8 +599,8 @@ const MainFeature = () => {
                     onChange={handleInputChange}
                   />
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         )}
 
