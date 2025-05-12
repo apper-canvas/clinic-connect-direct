@@ -7,6 +7,7 @@ import getIcon from '../utils/iconUtils';
 const Home = () => {
   const [activeTab, setActiveTab] = useState('appointments');
   const [selectedDoctorForAppointment, setSelectedDoctorForAppointment] = useState(null);
+  const [expandedPosts, setExpandedPosts] = useState({});
   const [selectedServiceForAppointment, setSelectedServiceForAppointment] = useState(null);
 
   // Icon declarations
@@ -76,6 +77,7 @@ const Home = () => {
       title: "5 Tips for Managing Seasonal Allergies",
       excerpt: "Learn effective strategies to minimize allergy symptoms and enjoy the outdoors year-round.",
       image: "https://images.unsplash.com/photo-1583468982228-19f19164aee2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+      fullContent: "Learn effective strategies to minimize allergy symptoms and enjoy the outdoors year-round. Seasonal allergies, also known as hay fever or allergic rhinitis, affect millions of people worldwide. The symptoms can range from mild to severe and include sneezing, itchy eyes, runny nose, and congestion. Here are five effective strategies to manage your seasonal allergies: \n\n1. **Monitor Pollen Counts**: Check daily pollen forecasts and plan outdoor activities when counts are lower, typically on rainy, cloudy, and windless days. \n\n2. **Create an Allergy-Free Home**: Keep windows closed during high pollen seasons, use air purifiers with HEPA filters, and regularly clean surfaces to reduce allergen buildup. \n\n3. **Practice Good Hygiene**: Shower and change clothes after spending time outdoors to remove pollen from your body and prevent spreading it throughout your home. \n\n4. **Consider Medication Options**: Over-the-counter antihistamines, nasal sprays, and eye drops can provide relief. For severe symptoms, consult with your doctor about prescription options or immunotherapy. \n\n5. **Try Natural Remedies**: Some people find relief with saline nasal irrigation, local honey, or certain herbal supplements like butterbur or quercetin. \n\nBy incorporating these strategies into your routine, you can significantly reduce allergy symptoms and enjoy a more comfortable experience during allergy season.",
       date: "Apr 12, 2023",
       category: "Wellness"
     },
@@ -84,6 +86,7 @@ const Home = () => {
       title: "Understanding Blood Pressure Readings",
       excerpt: "What your blood pressure numbers mean and how to maintain healthy levels through lifestyle changes.",
       image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
+      fullContent: "What your blood pressure numbers mean and how to maintain healthy levels through lifestyle changes. Blood pressure is a vital sign that measures the force of blood pushing against the walls of your arteries as your heart pumps. Understanding your readings is crucial for maintaining good health. \n\nA blood pressure reading consists of two numbers: systolic (top number) and diastolic (bottom number), measured in millimeters of mercury (mmHg). \n\n**Normal Blood Pressure**: Below 120/80 mmHg \n**Elevated**: Systolic 120-129 and diastolic below 80 \n**Stage 1 Hypertension**: Systolic 130-139 or diastolic 80-89 \n**Stage 2 Hypertension**: Systolic 140+ or diastolic 90+ \n**Hypertensive Crisis**: Systolic 180+ and/or diastolic 120+ (requires immediate medical attention) \n\nLifestyle changes that can help maintain healthy blood pressure include: \n\n1. **Regular Physical Activity**: Aim for at least 150 minutes of moderate exercise per week. \n\n2. **Heart-Healthy Diet**: Follow the DASH diet (Dietary Approaches to Stop Hypertension) which emphasizes fruits, vegetables, whole grains, and low-fat dairy products. \n\n3. **Reduce Sodium Intake**: Limit sodium to less than 2,300mg per day (about 1 teaspoon of salt). \n\n4. **Maintain a Healthy Weight**: Even modest weight loss can significantly lower blood pressure. \n\n5. **Limit Alcohol Consumption**: No more than one drink per day for women and two for men. \n\n6. **Manage Stress**: Practice relaxation techniques like deep breathing, meditation, or yoga. \n\n7. **Quit Smoking**: Tobacco causes an immediate, temporary increase in blood pressure and contributes to damaged arteries. \n\nRegular monitoring and working with your healthcare provider are essential parts of managing your blood pressure effectively.",
       date: "Mar 28, 2023",
       category: "Health Education"
     }
@@ -342,6 +345,10 @@ const Home = () => {
                   key={post.id}
                   className="card overflow-hidden"
                   initial={{ opacity: 0, y: 20 }}
+                  animate={{ 
+                    opacity: 1, 
+                    y: 0, 
+                  }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -361,13 +368,20 @@ const Home = () => {
                     </div>
                     <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
                     <p className="text-surface-600 dark:text-surface-400 mb-4">
-                      {post.excerpt}
+                      {expandedPosts[post.id] ? post.fullContent : post.excerpt}
                     </p>
                     <button 
                       className="inline-flex items-center text-secondary dark:text-secondary-light font-medium hover:underline"
-                      onClick={() => toast.info(`Reading "${post.title}" article`)}
+                      onClick={() => {
+                        // Toggle expanded state for this post
+                        setExpandedPosts(prev => ({
+                          ...prev,
+                          [post.id]: !prev[post.id]
+                        }));
+                        toast.info(`Reading "${post.title}" article`);
+                      }}
                     >
-                      Read more
+                      {expandedPosts[post.id] ? 'Show less' : 'Read more'}
                       {(() => {
                         const ArrowRightIcon = getIcon('ArrowRight');
                         return <ArrowRightIcon className="ml-1 h-4 w-4" />;
