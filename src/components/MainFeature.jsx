@@ -337,18 +337,16 @@ const MainFeature = () => {
             </div>
           </div>
         </div>
+        <div className="flex justify-between mt-2">
           <span className={step === 1 ? 'font-medium text-primary dark:text-primary-light' : ''} style={{ width: '120px' }}>
-          <span className={step === 1 ? 'font-medium text-primary dark:text-primary-light' : ''}>
             Date & Time
+          </span>
           <span className={step === 2 ? 'font-medium text-primary dark:text-primary-light' : ''} style={{ width: '120px' }}>
-            Provider & Info
             Provider & Service
+          </span>
           <span className={step === 3 ? 'font-medium text-primary dark:text-primary-light' : ''} style={{ width: '120px' }}>
             Review & Confirm
-            Your Information
           </span>
-      </div>
-      
         </div>
       </div>
 
@@ -641,7 +639,6 @@ const MainFeature = () => {
                     {selectedService?.name} ({selectedService?.duration}, {selectedService?.price})
                   </p>
                 </div>
-                  ></textarea>
                 </div>
               <h3 className="font-semibold text-lg mb-4">Patient Information</h3>
               
@@ -668,9 +665,7 @@ const MainFeature = () => {
                     <PhoneIcon className="h-4 w-4 mr-2 text-primary dark:text-primary-light" />
                     {formData.phone}
                   </p>
-                    <span className="text-surface-500 dark:text-surface-400">Service:</span>{' '}
-                    <span className="font-medium">{selectedService?.name}</span>
-              </div>
+                </div>
             </form>
           </div>
         )}
@@ -688,15 +683,16 @@ const MainFeature = () => {
           ) : (
             <div></div>
           )}
-          {step < 3 ? (
           {step < 3 && (
             <button 
               className="btn-primary"
               onClick={goToNextStep}
-              {step === 2 ? 'Review Appointment' : 'Next'}
+            >
               Next
               <ArrowRightIcon className="h-4 w-4 ml-2" />
-          ) : step === 3 && (
+            </button>
+          )}
+          {step === 3 && (
             <button 
               className="btn-primary"
               onClick={() => handleSubmit()}
@@ -716,7 +712,6 @@ const MainFeature = () => {
                   <CheckCircleIcon className="h-4 w-4 ml-2" />
                 </>
               )}
-            </button>
             </button>
           )}
         </div>
