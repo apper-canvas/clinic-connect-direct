@@ -597,8 +597,7 @@ const MainFeature = () => {
                     value={formData.notes}
                     onChange={handleInputChange}
                   />
-                  ></textarea>
-            </form>
+                </div>
             </div>
           </div>
         )}
@@ -670,7 +669,6 @@ const MainFeature = () => {
                 </div>
               </div>
             </div>
-          </div>
           </div>
         )}
 
