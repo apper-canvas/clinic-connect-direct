@@ -598,6 +598,7 @@ const MainFeature = () => {
                     onChange={handleInputChange}
                   />
                 </div>
+              </form>
             </div>
           </div>
         )}
