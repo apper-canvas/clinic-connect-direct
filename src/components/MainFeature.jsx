@@ -19,6 +19,7 @@ const MainFeature = () => {
   // State management
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [reviewCompleted, setReviewCompleted] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
@@ -143,13 +144,13 @@ const MainFeature = () => {
 
   // Handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     
     if (!validateForm()) {
       toast.error('Please fill in all required fields correctly');
       return;
     }
-    
+
     setIsSubmitting(true);
     
     // Simulate API call
@@ -164,7 +165,7 @@ const MainFeature = () => {
         service: selectedService,
         patient: `${formData.firstName} ${formData.lastName}`
       }]);
-      setShowConfirmation(true);
+      setStep(4); // Go to success page
     }, 1500);
   };
 
@@ -213,6 +214,7 @@ const MainFeature = () => {
     });
     setValidationErrors({});
     setShowConfirmation(false);
+    setReviewCompleted(false);
   };
 
   // Render confirmation screen
@@ -335,16 +337,18 @@ const MainFeature = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between items-center mt-2 text-sm text-surface-600 dark:text-surface-400">
+          <span className={step === 1 ? 'font-medium text-primary dark:text-primary-light' : ''} style={{ width: '120px' }}>
           <span className={step === 1 ? 'font-medium text-primary dark:text-primary-light' : ''}>
             Date & Time
-          </span>
-          <span className={step === 2 ? 'font-medium text-primary dark:text-primary-light' : ''}>
+          <span className={step === 2 ? 'font-medium text-primary dark:text-primary-light' : ''} style={{ width: '120px' }}>
+            Provider & Info
             Provider & Service
-          </span>
-          <span className={step === 3 ? 'font-medium text-primary dark:text-primary-light' : ''}>
+          <span className={step === 3 ? 'font-medium text-primary dark:text-primary-light' : ''} style={{ width: '120px' }}>
+            Review & Confirm
             Your Information
           </span>
+      </div>
+      
         </div>
       </div>
 
@@ -504,7 +508,6 @@ const MainFeature = () => {
                   ))}
                 </div>
               </div>
-            </div>
             <h2 className="text-xl font-semibold mb-6">Your Information</h2>
             
             <form onSubmit={handleSubmit}>
@@ -595,48 +598,78 @@ const MainFeature = () => {
                     placeholder="Please provide any information that might be helpful for your visit"
                     value={formData.notes}
                     onChange={handleInputChange}
+              </div>
+            </form>
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Review Your Appointment</h2>
+            <p className="text-surface-600 dark:text-surface-400 mb-6">
+              Please review your appointment details before confirming.
+            </p>
+            
+            <div className="bg-surface-50 dark:bg-surface-800 rounded-lg p-6 border border-surface-200 dark:border-surface-700 mb-6">
+              <h3 className="font-semibold text-lg mb-4">Appointment Details</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <p className="text-sm text-surface-500 dark:text-surface-400">Date & Time</p>
+                  <p className="font-medium flex items-center">
+                    <CalendarIcon className="h-4 w-4 mr-2 text-primary dark:text-primary-light" />
+                    {selectedDate && format(selectedDate, 'MMMM d, yyyy')}
+                    <span className="mx-1">at</span>
+                    <ClockIcon className="h-4 w-4 mr-1 ml-1 text-primary dark:text-primary-light" />
+                    {selectedTime}
+                  </p>
+                </div>
+                
+                <div>
+                  <p className="text-sm text-surface-500 dark:text-surface-400">Doctor</p>
+                  <p className="font-medium flex items-center">
+                    <UserIcon className="h-4 w-4 mr-2 text-primary dark:text-primary-light" />
+                    {selectedDoctor?.name} - {selectedDoctor?.specialty}
+                  </p>
+                </div>
+                
+                <div>
+                  <p className="text-sm text-surface-500 dark:text-surface-400">Service</p>
+                  <p className="font-medium flex items-center">
+                    <FileTextIcon className="h-4 w-4 mr-2 text-primary dark:text-primary-light" />
+                    {selectedService?.name} ({selectedService?.duration}, {selectedService?.price})
+                  </p>
+                </div>
                   ></textarea>
                 </div>
-              </div>
+              <h3 className="font-semibold text-lg mb-4">Patient Information</h3>
               
-              <div className="mt-6 bg-surface-100 dark:bg-surface-800 rounded-lg p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-surface-500 dark:text-surface-400">Name</p>
+                  <p className="font-medium flex items-center">
+                    <UserIcon className="h-4 w-4 mr-2 text-primary dark:text-primary-light" />
+                    {formData.firstName} {formData.lastName}
+                  </p>
+                </div>
+                
+                <div>
+                  <p className="text-sm text-surface-500 dark:text-surface-400">Email</p>
+                  <p className="font-medium flex items-center break-all">
+                    <MailIcon className="h-4 w-4 mr-2 text-primary dark:text-primary-light" />
+                    {formData.email}
+                  </p>
+                </div>
+                
                 <h3 className="font-medium mb-3">Appointment Summary</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                  <div>
-                    <span className="text-surface-500 dark:text-surface-400">Date:</span>{' '}
-                    <span className="font-medium">{selectedDate && format(selectedDate, 'MMMM d, yyyy')}</span>
-                  </div>
-                  <div>
-                    <span className="text-surface-500 dark:text-surface-400">Time:</span>{' '}
-                    <span className="font-medium">{selectedTime}</span>
-                  </div>
-                  <div>
-                    <span className="text-surface-500 dark:text-surface-400">Doctor:</span>{' '}
-                    <span className="font-medium">{selectedDoctor?.name}</span>
-                  </div>
-                  <div>
+                  <p className="text-sm text-surface-500 dark:text-surface-400">Phone</p>
+                  <p className="font-medium flex items-center">
+                    <PhoneIcon className="h-4 w-4 mr-2 text-primary dark:text-primary-light" />
+                    {formData.phone}
+                  </p>
                     <span className="text-surface-500 dark:text-surface-400">Service:</span>{' '}
                     <span className="font-medium">{selectedService?.name}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="mt-6">
-                <button
-                  type="submit"
-                  className="btn-primary w-full py-3"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Processing...
-                    </>
-                  ) : "Confirm Appointment"}
-                </button>
               </div>
             </form>
           </div>
@@ -655,14 +688,35 @@ const MainFeature = () => {
           ) : (
             <div></div>
           )}
-          
+          {step < 3 ? (
           {step < 3 && (
             <button 
               className="btn-primary"
               onClick={goToNextStep}
-            >
+              {step === 2 ? 'Review Appointment' : 'Next'}
               Next
               <ArrowRightIcon className="h-4 w-4 ml-2" />
+          ) : step === 3 && (
+            <button 
+              className="btn-primary"
+              onClick={() => handleSubmit()}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                <>
+                  Confirm Appointment
+                  <CheckCircleIcon className="h-4 w-4 ml-2" />
+                </>
+              )}
+            </button>
             </button>
           )}
         </div>
