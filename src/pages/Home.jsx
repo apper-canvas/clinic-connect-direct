@@ -6,7 +6,9 @@ import getIcon from '../utils/iconUtils';
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('appointments');
-  
+  const [selectedDoctorForAppointment, setSelectedDoctorForAppointment] = useState(null);
+  const [selectedServiceForAppointment, setSelectedServiceForAppointment] = useState(null);
+
   // Icon declarations
   const CalendarIcon = getIcon('Calendar');
   const UsersIcon = getIcon('Users');
@@ -96,9 +98,10 @@ const Home = () => {
   ];
 
   const renderTabContent = () => {
+    const bookAppointmentProps = { selectedDoctor: selectedDoctorForAppointment, selectedService: selectedServiceForAppointment };
     switch (activeTab) {
       case 'appointments':
-        return <MainFeature />;
+        return <MainFeature {...bookAppointmentProps} />;
       
       case 'doctors':
         return (
@@ -134,7 +137,9 @@ const Home = () => {
                     className="btn-outline w-full"
                     onClick={() => {
                       setActiveTab('appointments');
-                      toast.success(`Selected ${doctor.name} for appointment`);
+                      setSelectedDoctorForAppointment(doctor);
+                      setSelectedServiceForAppointment(null);
+                      toast.success(`${doctor.name} selected for appointment`);
                     }}
                   >
                     Book Appointment
@@ -173,7 +178,9 @@ const Home = () => {
                       className="btn-primary text-sm px-3 py-1"
                       onClick={() => {
                         setActiveTab('appointments');
-                        toast.info(`Selected ${service.name} service`);
+                        setSelectedServiceForAppointment(service);
+                        setSelectedDoctorForAppointment(null);
+                        toast.info(`${service.name} service selected`);
                       }}
                     >
                       Book Now
@@ -421,7 +428,9 @@ const Home = () => {
                   <button 
                     className="btn-primary text-base px-6 py-3" 
                     onClick={() => setActiveTab('appointments')}
-                  >
+                      setActiveTab('appointments');
+                      setSelectedDoctorForAppointment(null);
+                      setSelectedServiceForAppointment(null);
                     Book Appointment
                   </button>
                   <button 

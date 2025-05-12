@@ -400,7 +400,7 @@ const MainFeature = () => {
                           ? 'border-primary bg-primary/10 dark:border-primary-light dark:bg-primary-dark/30' 
                           : 'border-surface-200 dark:border-surface-700 hover:border-primary dark:hover:border-primary-light'}
                       `}
-                      onClick={() => setSelectedDoctor(doctor)}
+                      onClick={() => setDoctorSelection(doctor)}
                     >
                       <img 
                         src={doctor.image} 
@@ -450,7 +450,7 @@ const MainFeature = () => {
                 </div>
               </div>
             </div>
-          </div>
+                      onClick={() => setServiceSelection(service)}
         )}
 
         {step === 3 && (
