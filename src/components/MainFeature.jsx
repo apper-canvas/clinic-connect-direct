@@ -597,7 +597,7 @@ const MainFeature = () => {
                     value={formData.notes}
                     onChange={handleInputChange}
                   />
-              </div>
+                  ></textarea>
             </form>
             </div>
           </div>
@@ -640,8 +640,9 @@ const MainFeature = () => {
                     {selectedService?.name} ({selectedService?.duration}, {selectedService?.price})
                   </p>
                 </div>
-              <h3 className="font-semibold text-lg mb-4">Patient Information</h3>
               </div>
+              
+              <h3 className="font-semibold text-lg mb-4">Patient Information</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -669,6 +670,7 @@ const MainFeature = () => {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         )}
 
