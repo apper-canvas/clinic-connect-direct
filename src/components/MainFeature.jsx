@@ -32,6 +32,7 @@ const MainFeature = () => {
   const [dateRange, setDateRange] = useState([]);
   const [validationErrors, setValidationErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmedAppointments, setConfirmedAppointments] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   // Generate 7 days from today for selection
@@ -80,7 +81,7 @@ const MainFeature = () => {
         const isAvailable = Math.random() > 0.3; // 70% of slots available
         
         slots.push({
-          time,
+          formatted: format(time, 'h:mm a'),
           formatted: format(time, 'h:mm a'),
           available: isAvailable
         });
@@ -88,6 +89,11 @@ const MainFeature = () => {
     }
     
     return slots;
+  };
+
+  // Handle doctor selection
+  const setDoctorSelection = (doctor) => {
+    setSelectedDoctor(doctor);
   };
 
   // Handle form input changes
@@ -149,6 +155,15 @@ const MainFeature = () => {
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
+      // Save the appointment to our confirmed list
+      setConfirmedAppointments(prev => [...prev, {
+        id: Date.now(), // Use timestamp as a simple ID
+        date: selectedDate ? format(selectedDate, 'MMMM d, yyyy') : '',
+        time: selectedTime,
+        doctor: selectedDoctor,
+        service: selectedService,
+        patient: `${formData.firstName} ${formData.lastName}`
+      }]);
       setShowConfirmation(true);
     }, 1500);
   };
@@ -255,6 +270,46 @@ const MainFeature = () => {
       </motion.div>
     );
   }
+
+  // Render confirmed appointments list if any exist
+  const renderConfirmedAppointments = () => {
+    if (confirmedAppointments.length === 0) return null;
+    
+    return (
+      <motion.div 
+        className="card mt-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Your Confirmed Appointments</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-full divide-y divide-surface-200 dark:divide-surface-700">
+              <thead className="bg-surface-100 dark:bg-surface-800">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Time</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Doctor</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Service</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white dark:bg-surface-800 divide-y divide-surface-200 dark:divide-surface-700">
+                {confirmedAppointments.map(appointment => (
+                  <tr key={appointment.id} className="hover:bg-surface-50 dark:hover:bg-surface-700">
+                    <td className="px-4 py-3 whitespace-nowrap">{appointment.date}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{appointment.time}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{appointment.doctor?.name}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">{appointment.service?.name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -612,6 +667,9 @@ const MainFeature = () => {
           )}
         </div>
       </motion.div>
+      
+      {/* Confirmed appointments list */}
+      {renderConfirmedAppointments()}
     </div>
   );
 };
