@@ -596,7 +596,7 @@ const MainFeature = () => {
                     placeholder="Please provide any information that might be helpful for your visit"
                     value={formData.notes}
                     onChange={handleInputChange}
-                    onChange={handleInputChange}
+                  />
               </div>
             </form>
             </div>
