@@ -596,7 +596,7 @@ const MainFeature = () => {
                     placeholder="Please provide any information that might be helpful for your visit"
                     value={formData.notes}
                     onChange={handleInputChange}
-                  </textarea>
+                    onChange={handleInputChange}
               </div>
             </form>
             </div>
@@ -641,6 +641,7 @@ const MainFeature = () => {
                   </p>
                 </div>
               <h3 className="font-semibold text-lg mb-4">Patient Information</h3>
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -667,6 +668,7 @@ const MainFeature = () => {
                   </p>
                 </div>
               </div>
+            </div>
           </div>
         )}
 
